@@ -1,6 +1,7 @@
-# ico-server
-this is ico-server(address-server)
-
+# ico-server(address-server)
+- ICO 진행을 위한 서버단 개발관련 발표 정리(address-server) 
+- 사정상 코드는 아직 미공개합니다... 
+  
 ## Address-Server 발표
 
 ## 1. 개요  
@@ -8,8 +9,8 @@ this is ico-server(address-server)
 - ICO 지원을 위한 주소생성 서버 구축.
 
 #### 1-2. 구조 그림
-- Address-Server 구조
-![주소서버구조-최종](/uploads/856406b9459329563e54d5dd3ccb9677/주소서버구조-최종.png)
+- Address-Server 구조  
+<img width="839" alt="1" src="https://user-images.githubusercontent.com/32521173/51990848-3cf44000-24ed-11e9-8a48-95629f73aae8.png">
 
   
 #### 1-3. Address-Server 주요 역할
@@ -90,7 +91,9 @@ this is ico-server(address-server)
                    
 #### 4-2. Why Redis?
 ## Redis Pub/Sub Model.  
-![redis](/uploads/5491eca0032d7c29a8cb927a5f4eb323/redis.png)
+<img width="864" alt="2" src="https://user-images.githubusercontent.com/32521173/51990856-3ebe0380-24ed-11e9-8e47-149b8ce9f62c.png">
+  
+
   * 1:N 형태의 Publish/Subscribe 메세징 기능 지원.  
   * Pub/Sub System을 통해 현재 채널에 가입한 subscriber들 모두에게 특정 이벤트를 전달해야 하기 때문에 사용.
   * 현재 소스에 적용된, pub채널은 웹소켓에서 생성된 주소를 프론트 엔드로 넘길 수 있도록 하기 위한 채널이다.  
@@ -107,7 +110,10 @@ this is ico-server(address-server)
 ## Redis Message Queue Concept
 - Message Queue Concept 이미지
 - 하나 이상의 consumer가 job queue(작업 대기열)에서 queue 메세지를 소비하게 된다.
-![redis-message-queue](/uploads/7f6857d63fa9fc85a1ad9962a8306caf/redis-message-queue.png)
+<img width="852" alt="2019-01-31 12 16 37" src="https://user-images.githubusercontent.com/32521173/51991079-b2601080-24ed-11e9-999d-027ac13f7d14.png">
+  
+  
+
 
 ## Situation
 - 클러스터 서버 구성일 경우, Redis를 통해 주소생성 요청을 publish하게 되면서, 해당 채널로 subscribe중인 cluster된 두개의 Address-Server에 publish가 넘어가게 된다. 
@@ -120,8 +126,9 @@ this is ico-server(address-server)
 - 2개의 서버중 하나가 Queue에 쌓인 메세지를 pop한다.
   -> pop을 하게 되면 queue에 쌓인 메세지는 사라진다.
 - 1개의 서버가 메세지를 받아 처리할 때, 다른 서버는 queue에 쌓인 메세지가 없기 때문에 비지니스 로직이 중복으로 돌지 않는다.
-- 주소서버에 적용된 구조
-![Redis-queue-message](/uploads/3d2e381ffce5aa124c2896f87985212e/Redis-queue-message.png)
+- 주소서버에 적용된 구조  
+<img width="820" alt="3" src="https://user-images.githubusercontent.com/32521173/51990861-3fef3080-24ed-11e9-90e9-697a1373481e.png">  
+   
    
 
 ## Code
@@ -158,12 +165,12 @@ if(requestCreateWalletInfo != null ) {
 - Schedule 과 Trigger 를 가진 Batch Application 을 Grouping 할 수 있는 구조를 제공.
 - 여러 Application을 가지고 있는 Server 들을 제어할 수 있으며, 그 Application 들을 Clustering 기능을 통해 적절히 분배하여 효율적으로 동작시킬 수 있다.
 - 서버 장애 상황에도 대응할 수 있다. 
-- ex) **clustering없는** 시스템에서 서버에 장애가 발생했을 경우,  
-![no-cluster](/uploads/13ce7cb2907aa176e828cd365d5ae704/no-cluster.png)
-  
+- ex) **clustering없는** 시스템에서 서버에 장애가 발생했을 경우,    
+<img width="758" alt="4" src="https://user-images.githubusercontent.com/32521173/51990863-4087c700-24ed-11e9-9e59-62c0747d6f04.png">
+    
 - ex) **clustering을 적용하여**  시스템에서 서버에 장애가 발생했을 경우
-- Clustering을 통해, 같은 Group군 안에 있는 정상 서버의 application들이 나머지 job들을 적절히 분배하여 실행할 수 있으므로, 효율적인 batch수행이 가능하다.
-![qaurtz-clustering](/uploads/9dee32d5a8e313405d157d93d92f14d7/qaurtz-clustering.png)
+- Clustering을 통해, 같은 Group군 안에 있는 정상 서버의 application들이 나머지 job들을 적절히 분배하여 실행할 수 있으므로, 효율적인 batch수행이 가능하다.  
+<img width="838" alt="5" src="https://user-images.githubusercontent.com/32521173/51990866-41b8f400-24ed-11e9-9a66-f5a5a533794b.png">
 
 
   
