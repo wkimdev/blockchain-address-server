@@ -1,7 +1,11 @@
 # ico-server(address-server)
 - ICO 진행을 위한 서버단 개발관련 발표 정리(address-server) 
-- 사정상 코드는 아직 미공개합니다... 
-  
+- 코드 공개는 아직
+
+## tech stack
+- java
+- springboot
+    
 ## Address-Server 발표
 
 ## 1. 개요  
